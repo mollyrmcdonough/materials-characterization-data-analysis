@@ -38,6 +38,7 @@ def plot_Rxx_vs_T(temp_k_RvsT,rxx_RvsT):
     plt.title('Temperature vs $R_{xx}$')
     plt.grid(True)
     plt.savefig('temp_k_vs_rxx.png')
+    plt.show()
 
 def plot_Rxy_vs_T(temp_k_RvsT,rxy_RvsT):
     """
@@ -50,6 +51,7 @@ def plot_Rxy_vs_T(temp_k_RvsT,rxy_RvsT):
     plt.title('Temperature vs $R_{xy}$')
     plt.grid(True)
     plt.savefig('temp_k_vs_rxy.png')
+    plt.show()
 
 def plot_Rxx_vs_H(temp_k_RvsH,bfield_T_RvsH,rxx_RvsH):
     """
@@ -63,6 +65,7 @@ def plot_Rxx_vs_H(temp_k_RvsH,bfield_T_RvsH,rxx_RvsH):
     plt.legend(loc='upper right')
     plt.grid(True)
     plt.savefig('b_field_vs_rxx.png')
+    plt.show()
 
 def plot_Rxx_vs_H(temp_k_RvsH,bfield_T_RvsH,rxy_RvsH):
     """
@@ -76,4 +79,5 @@ def plot_Rxx_vs_H(temp_k_RvsH,bfield_T_RvsH,rxy_RvsH):
     plt.legend(loc='upper right')
     plt.grid(True)
     plt.savefig('b_field_vs_rxx.png')
+    plt.show()
 
