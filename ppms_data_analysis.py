@@ -1,7 +1,12 @@
 import transport_analysis as ppms
 # Define the file path
+<<<<<<< HEAD
 file_path_RvsT = "Example Data\Transport Data\TRP4_MBE1-230323A-MS_RT_300_2K_data.csv"
 file_path_RvsH = "Example Data\Transport Data\TRP4_MBE1-230323A-MS_RvsH_20K_data_T=20K.csv"
+=======
+file_path_RvsT = "Example Data\TRP4_MBE1-230323A-MS_RT_300_2K_data.csv"
+file_path_RvsH = "Example Data\TRP4_MBE1-230323A-MS_RvsH_20K_data_T=20K.csv"
+>>>>>>> a16e595bee53f833db0f2cc24aee37a0c684783e
 
 [temp_k_RvsT, rxx_RvsT, rxy_RvsT] = ppms.get_R_vs_T(file_path_RvsT)
 [temp_k_RvsH, bfield_T_RvsH, rxx_RvsH, rxy_RvsH] = ppms.get_R_vs_H(file_path_RvsH)
