@@ -5,7 +5,7 @@ import matplotlib as mpl
 import os
 from IPython import display
 
-filenameB = "Example Data/AFM Data/AFM2_MBE1-230404A-MS_23-414_Bi2Se3 on Al2O3 Se cap/MBE1-230404A-MS.0_00000.spm"
+filenameB = "Example Data\AFM Data\AFM2_MBE1-230404A-MS_23-414_Bi2Se3 on Al2O3 Se cap\MBE1-230404A-MS.0_00000.spm"
 ScanB = pySPM.Bruker(filenameB)
 ScanB.list_channels()
 topoB = ScanB.get_channel()
@@ -18,7 +18,16 @@ ax1.set_xlabel('X (µm)')
 ax1.set_ylabel('Y (µm)')
 plt.show()
 
-filenameA= "Example Data/AFM Data/AFM2_MBE1-230404A-MS_23-414_Bi2Se3 on Al2O3 Se cap/MBE1-230404A-MS.0_00001.spm"
+topo1a = topoB.correct_lines(inline=False)
+fig3, ax3 = plt.subplots()
+img3 = ax3.imshow(topo1a.pixels,cmap='afmhot', extent=[0,topo1a.size['real']['x'],0,topo1a.size['real']['y']])
+cbar3 = plt.colorbar(img3,ax=ax3)
+cbar3.set_label('Height (nm)')
+ax3.set_xlabel('X (µm)')
+ax3.set_ylabel('Y (µm)')
+plt.show()
+
+filenameA= "Example Data\AFM Data\AFM2_MBE1-230404A-MS_23-414_Bi2Se3 on Al2O3 Se cap\MBE1-230404A-MS.0_00001.spm"
 ScanA = pySPM.Bruker(filenameA)
 ScanA.list_channels()
 topoA = ScanA.get_channel()
