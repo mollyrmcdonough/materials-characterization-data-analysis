@@ -151,6 +151,11 @@ def RvsH_dat_file_import(filename):
     This code assumes you use Bridge 1 for Rxx (Logitudinal) and Bridge 2 for Rxy (Hall) Resistance. 
     If you do not use this set up, you can modify the data to your needs.
     '''
+    def remove_duplicates(df, column_name):
+        # This inner function removes duplicate rows based on the same field value
+        df_no_duplicates = df.drop_duplicates(subset=[column_name], keep='first')
+        return df_no_duplicates
+
     with open(filename, 'r') as dat_file:
         lines = dat_file.readlines()
         columns = lines[30].strip().split(',')
@@ -162,6 +167,7 @@ def RvsH_dat_file_import(filename):
     df['Magnetic Field (Oe)'] = df['Magnetic Field (Oe)'].astype('float') / 10000
     # Rename the column to 'Magnetic Field (T)'
     df = df.rename(columns={'Magnetic Field (Oe)': 'Magnetic Field (T)'})
+    df = remove_duplicates(df, 'Magnetic Field (T)')
     magnetic_field_df = df[['Magnetic Field (T)']] #Magnetic Field (T)
     bridge1_resistance_df = df[['Bridge 1 Resistance (Ohms)']].astype('float') #Rxx or Longitudinal Resistance (Ohms)
     bridge2_resistance_df = df[['Bridge 2 Resistance (Ohms)']].astype('float') #Rxy or Hall Resistance (Ohms)
@@ -176,13 +182,13 @@ def get_RvsH_down_and_up(magnetic_field_df,bridge1_resistance_df,bridge2_resista
     split_index = (magnetic_field_df['Magnetic Field (T)'].round(4) == min_field).idxmax()
 
     magnetic_field_down = magnetic_field_df.loc[:split_index]
-    magnetic_field_up = magnetic_field_df.loc[split_index+1:]
+    magnetic_field_up = magnetic_field_df.loc[split_index:]
 
     bridge1_resistance_down = bridge1_resistance_df.loc[:split_index]
-    bridge1_resistance_up = bridge1_resistance_df.loc[split_index+1:]
+    bridge1_resistance_up = bridge1_resistance_df.loc[split_index:]
 
     bridge2_resistance_down = bridge2_resistance_df.loc[:split_index]
-    bridge2_resistance_up = bridge2_resistance_df.loc[split_index+1:]
+    bridge2_resistance_up = bridge2_resistance_df.loc[split_index:]
 
     fielddown = magnetic_field_down['Magnetic Field (T)'].values
     resistancedown = bridge1_resistance_down['Bridge 1 Resistance (Ohms)'].values
@@ -193,20 +199,40 @@ def get_RvsH_down_and_up(magnetic_field_df,bridge1_resistance_df,bridge2_resista
     Hall_resistanceup = bridge2_resistance_up['Bridge 2 Resistance (Ohms)'].values
     return fielddown, resistancedown, Hall_resistancedown, fieldup, resistanceup, Hall_resistanceup
 
-def sym_antisym_interpolation(fielddown, resistancedown, Hall_resistancedown, fieldup, resistanceup, Hall_resistanceup,min_field):
-    FieldVals = np.arange(min_field, abs(min_field)+0.0001, 0.00005)
-    InterpRxxDown = np.interp(FieldVals, fielddown, resistancedown)
-    InterpRxyDown = np.interp(FieldVals, fielddown, Hall_resistancedown)
-    InterpRxxUp = np.interp(FieldVals, fieldup, resistanceup)
-    InterpRxyUp = np.interp(FieldVals, fieldup, Hall_resistanceup)
+from scipy.interpolate import interp1d
 
+def interpolate_and_symmetrize(fielddown, resistancedown, Hall_resistancedown, fieldup, resistanceup, Hall_resistanceup):
+    '''
+    This function interpolates and symmetrizes the PPMS data. 
+    '''
+    FieldVals = np.arange(-5, 5+0.0005, 0.0005)
+    FixedField = FieldVals
+    
+    interp_down_resistance = interp1d(fielddown, resistancedown, kind='linear', fill_value="extrapolate")
+    InterpRxxDown = interp_down_resistance(FixedField)
+    
+    interp_down_Hall_resistance = interp1d(fielddown, Hall_resistancedown, kind='linear', fill_value="extrapolate")
+    InterpRxyDown = interp_down_Hall_resistance(FixedField)
+    
+    interp_up_resistance = interp1d(fieldup, resistanceup, kind='linear', fill_value="extrapolate")
+    InterpRxxUp = interp_up_resistance(FixedField)
+    
+    interp_up_Hall_resistance = interp1d(fieldup, Hall_resistanceup, kind='linear', fill_value="extrapolate")
+    InterpRxyUp = interp_up_Hall_resistance(FixedField)
+
+    # Symmetrize Rxx and antisymmetrize Rxy
     RxxAvg = (InterpRxxDown + np.flip(InterpRxxUp)) / 2
-    FinalRxx = np.column_stack((FieldVals, RxxAvg))
+    FinalRxx = np.column_stack((FixedField, RxxAvg))
+    
     RxyAvg = (InterpRxyDown - np.flip(InterpRxyUp)) / 2
-    FinalRxy = np.column_stack((FieldVals, RxyAvg))
-    return FieldVals, RxxAvg, FinalRxx, RxyAvg, FinalRxy
+    FinalRxy = np.column_stack((FixedField, RxyAvg))
+    
+    return FixedField, RxxAvg, FinalRxx, RxyAvg, FinalRxy
 
-def Field_vs_Rxx_down_and_up(FieldVals,RxxAvg,temperature):
+def Field_vs_Rxx_down_and_up(FieldVals,RxxAvg,temperature,filename):
+    '''
+    This function plots Field vs Rxx and saves it as a .png.
+    '''
     plt.figure()
     plt.plot(FieldVals, RxxAvg, linewidth=2)
     plt.xlabel('Magnetic Field (T)')
@@ -214,9 +240,13 @@ def Field_vs_Rxx_down_and_up(FieldVals,RxxAvg,temperature):
     plt.plot(-FieldVals, RxxAvg, linewidth=2)
     plt.legend(['Up sweep', 'Down Sweep'])
     plt.title('Magnetic Field v.s. Logitudinal Resistance at ' + temperature +'K')
+    plt.savefig(filename + '_Field_vs_Rxx.png')
     plt.show()
 
-def Field_vs_Rxy_down_and_up(FieldVals,RxyAvg,temperature):
+def Field_vs_Rxy_down_and_up(FieldVals,RxyAvg,temperature,filename):
+    '''
+    This function plots Field vs R_xy and saves the figure as a .png.
+    '''
     plt.figure()
     plt.plot(FieldVals, RxyAvg, linewidth=2)
     plt.xlabel('Magnetic Field (T)')
@@ -224,4 +254,26 @@ def Field_vs_Rxy_down_and_up(FieldVals,RxyAvg,temperature):
     plt.plot(-FieldVals, -RxyAvg, linewidth=2)
     plt.legend(['Up sweep', 'Down Sweep'])
     plt.title('Magnetic Field v.s. Hall Resistance at ' + temperature + 'K')
+    plt.savefig( filename + '_Field_vs_Rxy.png')
     plt.show()
+
+def updown_data_writer(fieldup, resistanceup, Hall_resistanceup, fielddown, resistancedown, Hall_resistancedown,filename):
+    '''
+    This function will save your up data and down data as seperate .csv files with a filename you define. 
+    '''
+    # Convert the arrays to DataFrames
+    df_up = pd.DataFrame({
+        'Field Up': fieldup,
+        'Resistance Up': resistanceup,
+        'Hall Resistance Up': Hall_resistanceup,
+    })
+
+    df_down = pd.DataFrame({
+        'Field Down': fielddown,
+        'Resistance Down': resistancedown,
+        'Hall Resistance Down': Hall_resistancedown,
+    })
+
+    # Write to .csv files
+    df_up.to_csv(filename + '_up.csv', index=False)
+    df_down.to_csv(filename + '_down.csv', index=False)
