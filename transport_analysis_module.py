@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 import numpy as np
+import csv
 
 def get_R_vs_T(filename):
     """
@@ -143,3 +144,84 @@ def calculate_conductivity(rho):
     """
     sigma = 1 / rho
     return sigma
+
+def RvsH_dat_file_import(filename):
+    '''
+    This function takes in a .dat file from the DynaCool PPMS System at Penn State. 
+    This code assumes you use Bridge 1 for Rxx (Logitudinal) and Bridge 2 for Rxy (Hall) Resistance. 
+    If you do not use this set up, you can modify the data to your needs.
+    '''
+    with open(filename, 'r') as dat_file:
+        lines = dat_file.readlines()
+        columns = lines[30].strip().split(',')
+        data_lines = list(csv.reader(lines[31:], delimiter=','))
+        df = pd.DataFrame(data_lines, columns=columns)
+    temp_df = df[['Temperature (K)']].astype('float')
+    temperature = str(int(np.mean(temp_df)))
+    # Convert magnetic field from Oe to T
+    df['Magnetic Field (Oe)'] = df['Magnetic Field (Oe)'].astype('float') / 10000
+    # Rename the column to 'Magnetic Field (T)'
+    df = df.rename(columns={'Magnetic Field (Oe)': 'Magnetic Field (T)'})
+    magnetic_field_df = df[['Magnetic Field (T)']] #Magnetic Field (T)
+    bridge1_resistance_df = df[['Bridge 1 Resistance (Ohms)']].astype('float') #Rxx or Longitudinal Resistance (Ohms)
+    bridge2_resistance_df = df[['Bridge 2 Resistance (Ohms)']].astype('float') #Rxy or Hall Resistance (Ohms)
+    return temperature, magnetic_field_df, bridge1_resistance_df, bridge2_resistance_df
+
+def get_RvsH_down_and_up(magnetic_field_df,bridge1_resistance_df,bridge2_resistance_df,min_field):
+    '''
+    This function takes a magnetic field data frame, bridge 1 resistance, bridge2 resistance, and the minimum field of your measurement
+    to generate data frames for the up sweep and the down sweep of the field. 
+    For example, if you sweep from 5 Tesla to -5 Tesla and -5 Tesla to 5 Tesla, your min_field should be input as -5.
+    '''
+    split_index = (magnetic_field_df['Magnetic Field (T)'].round(4) == min_field).idxmax()
+
+    magnetic_field_down = magnetic_field_df.loc[:split_index]
+    magnetic_field_up = magnetic_field_df.loc[split_index+1:]
+
+    bridge1_resistance_down = bridge1_resistance_df.loc[:split_index]
+    bridge1_resistance_up = bridge1_resistance_df.loc[split_index+1:]
+
+    bridge2_resistance_down = bridge2_resistance_df.loc[:split_index]
+    bridge2_resistance_up = bridge2_resistance_df.loc[split_index+1:]
+
+    fielddown = magnetic_field_down['Magnetic Field (T)'].values
+    resistancedown = bridge1_resistance_down['Bridge 1 Resistance (Ohms)'].values
+    Hall_resistancedown = bridge2_resistance_down['Bridge 2 Resistance (Ohms)'].values
+
+    fieldup = magnetic_field_up['Magnetic Field (T)'].values
+    resistanceup = bridge1_resistance_up['Bridge 1 Resistance (Ohms)'].values
+    Hall_resistanceup = bridge2_resistance_up['Bridge 2 Resistance (Ohms)'].values
+    return fielddown, resistancedown, Hall_resistancedown, fieldup, resistanceup, Hall_resistanceup
+
+def sym_antisym_interpolation(fielddown, resistancedown, Hall_resistancedown, fieldup, resistanceup, Hall_resistanceup,min_field):
+    FieldVals = np.arange(min_field, abs(min_field)+0.0001, 0.00005)
+    InterpRxxDown = np.interp(FieldVals, fielddown, resistancedown)
+    InterpRxyDown = np.interp(FieldVals, fielddown, Hall_resistancedown)
+    InterpRxxUp = np.interp(FieldVals, fieldup, resistanceup)
+    InterpRxyUp = np.interp(FieldVals, fieldup, Hall_resistanceup)
+
+    RxxAvg = (InterpRxxDown + np.flip(InterpRxxUp)) / 2
+    FinalRxx = np.column_stack((FieldVals, RxxAvg))
+    RxyAvg = (InterpRxyDown - np.flip(InterpRxyUp)) / 2
+    FinalRxy = np.column_stack((FieldVals, RxyAvg))
+    return FieldVals, RxxAvg, FinalRxx, RxyAvg, FinalRxy
+
+def Field_vs_Rxx_down_and_up(FieldVals,RxxAvg,temperature):
+    plt.figure()
+    plt.plot(FieldVals, RxxAvg, linewidth=2)
+    plt.xlabel('Magnetic Field (T)')
+    plt.ylabel('Longitudinal Resistance (Ω)')
+    plt.plot(-FieldVals, RxxAvg, linewidth=2)
+    plt.legend(['Up sweep', 'Down Sweep'])
+    plt.title('Magnetic Field v.s. Logitudinal Resistance at ' + temperature +'K')
+    plt.show()
+
+def Field_vs_Rxy_down_and_up(FieldVals,RxyAvg,temperature):
+    plt.figure()
+    plt.plot(FieldVals, RxyAvg, linewidth=2)
+    plt.xlabel('Magnetic Field (T)')
+    plt.ylabel('Hall Resistance (Ω)')
+    plt.plot(-FieldVals, -RxyAvg, linewidth=2)
+    plt.legend(['Up sweep', 'Down Sweep'])
+    plt.title('Magnetic Field v.s. Hall Resistance at ' + temperature + 'K')
+    plt.show()
