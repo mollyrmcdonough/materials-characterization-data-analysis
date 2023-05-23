@@ -61,7 +61,7 @@ df = pd.DataFrame({
     'Intensity': intensities
 })
 
-df.to_csv('my_data.csv', index=False)
+df.to_csv('OmegavsIntensity.csv', index=False)
 
 import numpy as np
 from scipy.optimize import curve_fit
