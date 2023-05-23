@@ -1,0 +1,14 @@
+In Progress:
+- PPMS data analysis module
+  - adding feature to calculate resitivity, conductivity, carrier density, and mobility
+- XRD/XRR data analysis module
+  - adding feature to plot XRD and XRR data
+  - adding feature to fit XRD/XRR dara
+- AFM data analysis module
+  - export images from .spm data
+  - simple roughness analysis
+  - flattening
+To Do: 
+- XPS data analysis module
+- Ellipsometry data analysis module
+- documentation
