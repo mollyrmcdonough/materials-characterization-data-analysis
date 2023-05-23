@@ -155,6 +155,10 @@ def RvsH_dat_file_import(filename):
         # This inner function removes duplicate rows based on the same field value
         df_no_duplicates = df.drop_duplicates(subset=[column_name], keep='first')
         return df_no_duplicates
+    
+
+    if not filename.endswith(".dat"):
+        raise Exception("Provided file is not a .dat file!")
 
     with open(filename, 'r') as dat_file:
         lines = dat_file.readlines()
