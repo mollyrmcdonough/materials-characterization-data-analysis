@@ -27,7 +27,7 @@ df = pd.DataFrame({
 })
 
 # Plot the data
-plt.figure(figsize=(10, 6))
+plt.figure()
 plt.plot(df['2Theta'], df['Intensity'])
 plt.xlabel('2Theta (degrees)')
 plt.ylabel('Intensity (arb. units)')

@@ -5,7 +5,7 @@ import matplotlib as mpl
 import os
 from IPython import display
 
-filenameB = "Example Data\AFM Data\AFM2_MBE1-230404A-MS_23-414_Bi2Se3 on Al2O3 Se cap\MBE1-230404A-MS.0_00000.spm"
+filenameB = "Example Data/AFM Data/AFM2_MBE1-230404A-MS_23-414_Bi2Se3 on Al2O3 Se cap/MBE1-230404A-MS.0_00000.spm"
 ScanB = pySPM.Bruker(filenameB)
 ScanB.list_channels()
 topoB = ScanB.get_channel()
@@ -27,7 +27,7 @@ ax3.set_xlabel('X (µm)')
 ax3.set_ylabel('Y (µm)')
 plt.show()
 
-filenameA= "Example Data\AFM Data\AFM2_MBE1-230404A-MS_23-414_Bi2Se3 on Al2O3 Se cap\MBE1-230404A-MS.0_00001.spm"
+filenameA= "Example Data/AFM Data/AFM2_MBE1-230404A-MS_23-414_Bi2Se3 on Al2O3 Se cap/MBE1-230404A-MS.0_00001.spm"
 ScanA = pySPM.Bruker(filenameA)
 ScanA.list_channels()
 topoA = ScanA.get_channel()
@@ -39,3 +39,17 @@ cbar2.set_label('Height (nm)')
 ax2.set_xlabel('X (µm)')
 ax2.set_ylabel('Y (µm)')
 plt.show()
+
+topoB = ScanB.get_channel("Height Sensor")
+print(topoB.pixels)
+# Convert the height data to a numpy array
+height_data = np.array(topoB.pixels)
+
+# Calculate roughness parameters
+Ra = np.mean(np.abs(height_data))
+Rq = np.sqrt(np.mean(height_data**2))
+Rz = np.max(height_data) - np.min(height_data)
+
+print("Ra:", Ra, "nm")
+print("Rq:", Rq, "nm")
+print("Rz:", Rz, "nm")

@@ -34,9 +34,6 @@ plt.ylabel('Intensity (arb. units)')
 plt.grid(True)
 plt.show()
 
-# already defined:
-# omegas, intensities
-
 peak_index = np.argmax(intensities)
 peak_omega = omegas[peak_index]
 peak_intensity = intensities[peak_index]
@@ -55,7 +52,6 @@ print(f"FWHM: {fwhm}")
 print(f"d-space: {d_space}")
 
 
-# assuming omegas and intensities are your lists
 df = pd.DataFrame({
     'Omega': omegas,
     'Intensity': intensities
