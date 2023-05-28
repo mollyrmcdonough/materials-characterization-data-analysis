@@ -1,4 +1,4 @@
-import transport_analysis_module as ppms
+import src.ppms as ppms
 filename = 'Example Data/Transport Data/TRP4_MBE1-230327A-MS_RvsH_50K.dat'
 min_field = -5
 temperature, magnetic_field_df, bridge1_resistance_df, bridge2_resistance_df = ppms.RvsH_dat_file_import(filename)
