@@ -233,7 +233,7 @@ def interpolate_and_symmetrize(fielddown, resistancedown, Hall_resistancedown, f
     
     return FixedField, RxxAvg, FinalRxx, RxyAvg, FinalRxy
 
-def Field_vs_Rxx_down_and_up(FieldVals,RxxAvg,temperature,filename):
+def Field_vs_Rxx_down_and_up(FieldVals,RxxAvg,temperature,save_path,filename):
     '''
     This function plots Field vs Rxx and saves it as a .png.
     '''
@@ -244,10 +244,10 @@ def Field_vs_Rxx_down_and_up(FieldVals,RxxAvg,temperature,filename):
     plt.plot(-FieldVals, RxxAvg, linewidth=2)
     plt.legend(['Up sweep', 'Down Sweep'])
     plt.title('Magnetic Field v.s. Logitudinal Resistance at ' + temperature +'K')
-    plt.savefig(filename + '_Field_vs_Rxx.png')
+    plt.savefig(save_path + filename + '_Field_vs_Rxx.png')
     plt.show()
 
-def Field_vs_Rxy_down_and_up(FieldVals,RxyAvg,temperature,filename):
+def Field_vs_Rxy_down_and_up(FieldVals,RxyAvg,temperature,save_path,filename):
     '''
     This function plots Field vs R_xy and saves the figure as a .png.
     '''
@@ -258,10 +258,10 @@ def Field_vs_Rxy_down_and_up(FieldVals,RxyAvg,temperature,filename):
     plt.plot(-FieldVals, -RxyAvg, linewidth=2)
     plt.legend(['Up sweep', 'Down Sweep'])
     plt.title('Magnetic Field v.s. Hall Resistance at ' + temperature + 'K')
-    plt.savefig( filename + '_Field_vs_Rxy.png')
+    plt.savefig( save_path +filename + '_Field_vs_Rxy.png')
     plt.show()
 
-def updown_data_writer(fieldup, resistanceup, Hall_resistanceup, fielddown, resistancedown, Hall_resistancedown,filename):
+def updown_data_writer(fieldup, resistanceup, Hall_resistanceup, fielddown, resistancedown, Hall_resistancedown,save_path,filename):
     '''
     This function will save your up data and down data as seperate .csv files with a filename you define. 
     '''
@@ -279,5 +279,5 @@ def updown_data_writer(fieldup, resistanceup, Hall_resistanceup, fielddown, resi
     })
 
     # Write to .csv files
-    df_up.to_csv(filename + '_up.csv', index=False)
-    df_down.to_csv(filename + '_down.csv', index=False)
+    df_up.to_csv(save_path + filename + '_up.csv', index=False)
+    df_down.to_csv(save_path + filename + '_down.csv', index=False)
