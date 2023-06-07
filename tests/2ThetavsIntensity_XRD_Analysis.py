@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 # Parse XML file
-tree = ET.parse('Example Data/XRD Data/XRD4_MBE1-230331A-MS_Gonio Pixcel.xrdml')
+tree = ET.parse('data/example_data/xrd/XRD4_MBE1-230331A-MS_Gonio Pixcel.xrdml')
 root = tree.getroot()
 
 # Define namespace dictionary

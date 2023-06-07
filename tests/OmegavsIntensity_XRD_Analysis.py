@@ -6,7 +6,7 @@ from scipy.signal import peak_widths
 import numpy as np
 
 # Parse XML file
-tree = ET.parse('Example Data/XRD Data/XRD4_MBE1-230331A-MS_33.9475 Omega.xrdml')
+tree = ET.parse('data/example_data/xrd/XRD4_MBE1-230331A-MS_33.9475 Omega.xrdml')
 root = tree.getroot()
 
 # Define namespace dictionary

@@ -84,67 +84,6 @@ def plot_Rxy_vs_H(temp_k_RvsH,bfield_T_RvsH,rxy_RvsH):
     plt.savefig('b_field_vs_rxx.png')
     plt.show()
 
-# Define the quadratic function
-def quadratic(x, a, b, c):
-    return a * x**2 + b * x + c
-
-# Define the derivative of the quadratic function
-def linear(x, a, b):
-    return 2 * a * x + b
-
-def calculate_slope(bfield_T_RvsH, rxy_RvsH):
-    """
-    Calculates the slope of the best-fit quadratic line to the Rxy vs B-field data at each B-field value.
-    Returns an array of the same length as bfield_T_RvsH and rxy_RvsH, with the slope at each B-field value.
-    """
-    # Fit the quadratic function to the data
-    popt, pcov = curve_fit(quadratic, bfield_T_RvsH, rxy_RvsH)
-
-    # Calculate the slope at each B-field value
-    slopes = linear(bfield_T_RvsH, popt[0], popt[1])
-
-    return slopes
-
-def calculate_hall_coefficient(bfield_T_RvsH, slopes):
-    """
-    Calculates the Hall coefficient from the B-field and slope data.
-    """
-    # The Hall coefficient is the average of the slopes divided by the average of the B-field values
-    R_H = np.mean(slopes) / np.mean(bfield_T_RvsH)
-    return R_H
-
-def calculate_carrier_density(R_H):
-    """
-    Calculates the carrier density from the Hall coefficient.
-    """
-    e = 1.6e-19  # charge of an electron
-    n = 1 / (e * R_H)
-    return n
-
-def calculate_mobility(rxx_RvsH, n):
-    """
-    Calculates the mobility from the Rxx and carrier density data.
-    """
-    rho = np.mean(rxx_RvsH)  # resistivity is the average of the Rxx values
-    mu = 1 / (rho * n)
-    return mu
-
-def calculate_resistivity(rxx_RvsH, width, length):
-    """
-    Calculates the resistivity from the Rxx data and the dimensions of the device.
-    """
-    R = np.mean(rxx_RvsH)  # Resistance is the average of the Rxx values
-    A = width * length  # Cross-sectional area
-    rho = R * (A / length)  # Resistivity
-    return rho
-
-def calculate_conductivity(rho):
-    """
-    Calculates the conductivity from the resistivity.
-    """
-    sigma = 1 / rho
-    return sigma
-
 def RvsH_dat_file_import(filename):
     '''
     This function takes in a .dat file from the DynaCool PPMS System at Penn State. 
