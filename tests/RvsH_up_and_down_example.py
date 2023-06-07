@@ -1,4 +1,4 @@
-from mcda import ppms
+from __editable___mcda_0_1_finder import ppm
 filename = 'data/example_data/ppms/TRP4_MBE1-230327A-MS_RvsH_50K.dat'
 save_path = 'data/example outputs/ppms/'
 min_field = -5

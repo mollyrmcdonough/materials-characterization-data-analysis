@@ -1,0 +1,9 @@
+LICENSE
+README.md
+setup.py
+materialsanalysis.egg-info/PKG-INFO
+materialsanalysis.egg-info/SOURCES.txt
+materialsanalysis.egg-info/dependency_links.txt
+materialsanalysis.egg-info/requires.txt
+materialsanalysis.egg-info/top_level.txt
+tests/test.py
