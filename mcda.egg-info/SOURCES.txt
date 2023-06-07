@@ -1,9 +1,0 @@
-LICENSE
-README.md
-setup.py
-mcda.egg-info/PKG-INFO
-mcda.egg-info/SOURCES.txt
-mcda.egg-info/dependency_links.txt
-mcda.egg-info/requires.txt
-mcda.egg-info/top_level.txt
-tests/test.py
