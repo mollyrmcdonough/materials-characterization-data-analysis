@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: mcda
+Version: 0.0.0
+Summary: Materials Characterization Data Analysis
+Home-page: 
+Author: Molly McDonough
+Author-email: mrm6464@psu.edu
+Project-URL: Documentation, 
+Project-URL: Bug Reports, 
+Project-URL: Source Code, 
+Keywords: materials science,data analysis
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Scientists and Engineers
+Classifier: Topic :: Materials Science :: Data Analysis
+Classifier: Programming Language :: Python :: 3.11.3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+License-File: LICENSE
+
+# Materials Characterization Data Analysis (MCDA)
+Python modules to analyze charecterization data.
