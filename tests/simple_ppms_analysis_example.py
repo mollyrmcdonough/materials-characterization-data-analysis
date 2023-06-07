@@ -1,4 +1,4 @@
-import ppms
+from . import ppms
 # Define the file path
 file_path_RvsT = "Example Data/Transport Data/TRP4_MBE1-230323A-MS_RT_300_2K_data.csv"
 file_path_RvsH = "Example Data/Transport Data/TRP4_MBE1-230323A-MS_RvsH_20K_data_T=20K.csv"

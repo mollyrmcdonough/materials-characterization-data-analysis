@@ -1,26 +1,20 @@
+# setup.py
 from setuptools import setup, find_packages
 
 setup(
-    name='mcda',
-    version='0.1',    
-    description='A useful description',
-    author='Your Name',
-    author_email='your.email@example.com',
-    url='http://example.com',
-    packages=find_packages(),    
-    install_requires=[
-        'pandas>=1.2.0',
-        'matplotlib',
-        'scipy',
-        'numpy',
-    ],
+    name="mcda",
+    version="0.1",
+    packages=find_packages(),
+    author="Molly McDonough",
+    author_email="mrm6464@psu.edu",
+    description="A Python package for analyzing materials characterization data",
+    long_description=open('README.md').read(),
+    long_description_content_type="text/markdown",
+    url="https://github.com/mollyrmcdonough/mcda",
     classifiers=[
-        'Development Status :: 3 - Alpha',      
-        'Intended Audience :: Developers',      
-        'Topic :: Software Development :: Build Tools',
-        'License :: OSI Approved :: MIT License',  
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
     ],
+    python_requires='>=3.6',
 )
