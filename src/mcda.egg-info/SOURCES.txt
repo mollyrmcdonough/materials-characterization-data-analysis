@@ -10,5 +10,4 @@ src/mcda.egg-info/SOURCES.txt
 src/mcda.egg-info/dependency_links.txt
 src/mcda.egg-info/requires.txt
 src/mcda.egg-info/top_level.txt
-tests/test.py
 tests/test_ppms.py

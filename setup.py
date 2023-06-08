@@ -33,7 +33,7 @@ setuptools.setup(
         'Operating System :: OS Independent',
     ],
     python_requires='>=3.6',
-    # install_requires=['Pillow'],
+    install_requires=['numpy','scipy','matplotlib','pandas', 'pySPM'],
     extras_require={
         'dev': ['check-manifest'],
         # 'test': ['coverage'],
