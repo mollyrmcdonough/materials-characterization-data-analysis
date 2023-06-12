@@ -1,4 +1,3 @@
-
 import os
 import pandas as pd
 import pathlib
@@ -19,7 +18,7 @@ headers = {
     'X-API-Key': LIST_API_KEY
 }
 
-query = {'instrumentId': 'MBE1'}
+query = {'instrumentId': 'MBE2'}
 
 def getSampleList(query=query,headers=headers):
     response = requests.post(api_url+'samples/search', json=query, headers=headers)
@@ -32,3 +31,5 @@ def getSampleList(query=query,headers=headers):
     df = pd.DataFrame({k: [x[k] for x in data] for k in keys})
     print(df)
     return df
+
+getSampleList(query=query,headers=headers)

@@ -29,10 +29,10 @@ FixedField, RxxAvg, FinalRxx, RxyAvg, FinalRxy = ppms.interpolate_and_symmetrize
     Hall_resistanceup,
 )
 ppms.Field_vs_Rxx_down_and_up(
-    FixedField, RxxAvg, temperature, save_path, "TRP4_MBE1-230327A-MS_RvsH_50K"
+    FixedField, RxxAvg, temperature
 )
 ppms.Field_vs_Rxy_down_and_up(
-    FixedField, RxyAvg, temperature, save_path, "TRP4_MBE1-230327A-MS_RvsH_50K"
+    FixedField, RxyAvg, temperature
 )
 
 ppms.updown_data_writer(

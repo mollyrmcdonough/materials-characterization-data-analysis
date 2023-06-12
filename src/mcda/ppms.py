@@ -172,32 +172,32 @@ def interpolate_and_symmetrize(fielddown, resistancedown, Hall_resistancedown, f
     
     return FixedField, RxxAvg, FinalRxx, RxyAvg, FinalRxy
 
-def Field_vs_Rxx_down_and_up(FieldVals,RxxAvg,temperature,save_path,filename):
+def Field_vs_Rxx_down_and_up(FixedField,RxxAvg,temperature):
     '''
     This function plots Field vs Rxx and saves it as a .png.
     '''
     plt.figure()
-    plt.plot(FieldVals, RxxAvg, linewidth=2)
+    plt.plot(FixedField, RxxAvg, linewidth=2)
     plt.xlabel('Magnetic Field (T)')
     plt.ylabel('Longitudinal Resistance (Ω)')
-    plt.plot(-FieldVals, RxxAvg, linewidth=2)
+    plt.plot(-FixedField, RxxAvg, linewidth=2)
     plt.legend(['Up sweep', 'Down Sweep'])
     plt.title('Magnetic Field v.s. Logitudinal Resistance at ' + temperature +'K')
-    plt.savefig(save_path + filename + '_Field_vs_Rxx.png')
+    # plt.savefig(save_path + filename + '_Field_vs_Rxx.png')
     plt.show()
 
-def Field_vs_Rxy_down_and_up(FieldVals,RxyAvg,temperature,save_path,filename):
+def Field_vs_Rxy_down_and_up(FixedField,RxyAvg,temperature):
     '''
     This function plots Field vs R_xy and saves the figure as a .png.
     '''
     plt.figure()
-    plt.plot(FieldVals, RxyAvg, linewidth=2)
+    plt.plot(FixedField, RxyAvg, linewidth=2)
     plt.xlabel('Magnetic Field (T)')
     plt.ylabel('Hall Resistance (Ω)')
-    plt.plot(-FieldVals, -RxyAvg, linewidth=2)
+    plt.plot(-FixedField, -RxyAvg, linewidth=2)
     plt.legend(['Up sweep', 'Down Sweep'])
     plt.title('Magnetic Field v.s. Hall Resistance at ' + temperature + 'K')
-    plt.savefig( save_path +filename + '_Field_vs_Rxy.png')
+    # plt.savefig( save_path +filename + '_Field_vs_Rxy.png')
     plt.show()
 
 def updown_data_writer(fieldup, resistanceup, Hall_resistanceup, fielddown, resistancedown, Hall_resistancedown,save_path,filename):
