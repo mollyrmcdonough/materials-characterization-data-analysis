@@ -53,7 +53,6 @@ def plot_Rxy_vs_T(temp_k_RvsT,rxy_RvsT):
     plt.ylabel('$R_{xy} (\Omega)$')
     plt.title('Temperature vs $R_{xy}$')
     plt.grid(True)
-    plt.savefig('temp_k_vs_rxy.png')
     plt.show()
 
 def plot_Rxx_vs_H(temp_k_RvsH,bfield_T_RvsH,rxx_RvsH):
@@ -67,7 +66,6 @@ def plot_Rxx_vs_H(temp_k_RvsH,bfield_T_RvsH,rxx_RvsH):
     plt.title('B-field vs $R_{xx}$')
     plt.legend(loc='upper right')
     plt.grid(True)
-    plt.savefig('b_field_vs_rxx.png')
     plt.show()
 
 def plot_Rxy_vs_H(temp_k_RvsH,bfield_T_RvsH,rxy_RvsH):
@@ -81,7 +79,6 @@ def plot_Rxy_vs_H(temp_k_RvsH,bfield_T_RvsH,rxy_RvsH):
     plt.title('B-field vs $R_{xy}$')
     plt.legend(loc='upper right')
     plt.grid(True)
-    plt.savefig('b_field_vs_rxx.png')
     plt.show()
 
 def RvsH_dat_file_import(filename):
@@ -183,7 +180,6 @@ def Field_vs_Rxx_down_and_up(FixedField,RxxAvg,temperature):
     plt.plot(-FixedField, RxxAvg, linewidth=2)
     plt.legend(['Up sweep', 'Down Sweep'])
     plt.title('Magnetic Field v.s. Logitudinal Resistance at ' + temperature +'K')
-    # plt.savefig(save_path + filename + '_Field_vs_Rxx.png')
     plt.show()
 
 def Field_vs_Rxy_down_and_up(FixedField,RxyAvg,temperature):
@@ -197,7 +193,6 @@ def Field_vs_Rxy_down_and_up(FixedField,RxyAvg,temperature):
     plt.plot(-FixedField, -RxyAvg, linewidth=2)
     plt.legend(['Up sweep', 'Down Sweep'])
     plt.title('Magnetic Field v.s. Hall Resistance at ' + temperature + 'K')
-    # plt.savefig( save_path +filename + '_Field_vs_Rxy.png')
     plt.show()
 
 def updown_data_writer(fieldup, resistanceup, Hall_resistanceup, fielddown, resistancedown, Hall_resistancedown,save_path,filename):

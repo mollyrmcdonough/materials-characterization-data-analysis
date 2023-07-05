@@ -16,7 +16,6 @@ def showHeightSensor(topo):
     fig, ax = plt.subplots()
     topo.show(ax=ax)
     plt.show()
-import numpy as np
 
 def showHeightSensorCorrected(topo, scanSize, scanSizeLabel):
     '''
@@ -44,8 +43,6 @@ def showHeightSensorCorrected(topo, scanSize, scanSizeLabel):
     cbar.set_ticks([np.min(pixels), np.max(pixels)])  # set ticks at min and max of pixel values
 
     plt.show()
-
-import numpy as np
 
 def afmDataShape(topo,scanSize):
     pixels = topo.correct_plane().pixels
