@@ -4,3 +4,4 @@ __pycache__
 .env
 src/mcda.egg-info/
 src/mcda/__pycache__/
+data/example_data/arpes
